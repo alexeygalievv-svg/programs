@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ЭЛИТНЫЕ АРХИТЕКТОРЫ — ДЕНЬГИ ИДУТ ЗА НАМИ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #1a0030;
+      --bg-mid: #2d0060;
+      --violet: #8b2fff;
+      --gold: #d4af37;
+      --gold-bright: #ffd700;
+      --black: #0a0014;
+      --font-display: "Anton", Impact, sans-serif;
+      --font-mono: "DM Mono", ui-monospace, monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      cursor: none;
+    }
+
+    /* Custom cursor: small gold dollar — fallback when reduced motion */
+    body {
+      min-height: 100vh;
+      font-family: var(--font-mono);
+      font-size: clamp(13px, 1.4vw, 15px);
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.88);
+      background: var(--bg-deep);
+      overflow-x: hidden;
+    }
+
+    .cursor-dot {
+      position: fixed;
+      width: 22px;
+      height: 22px;
+      pointer-events: none;
+      z-index: 99999;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold-bright);
+      text-shadow:
+        0 0 8px var(--violet),
+        0 0 12px var(--gold);
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease-out;
+      mix-blend-mode: screen;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { cursor: auto; }
+      .cursor-dot { display: none; }
+    }
+
+    /* Animated mesh gradient + noise overlay on whole page */
+    .mesh-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(139, 47, 255, 0.35) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 50% at 80% 20%, rgba(45, 0, 96, 0.9) 0%, transparent 45%),
+        radial-gradient(ellipse 60% 70% at 60% 90%, rgba(26, 0, 48, 0.95) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(139, 47, 255, 0.2) 0%, transparent 45%),
+        linear-gradient(165deg, var(--bg-deep) 0%, var(--bg-mid) 45%, var(--black) 100%);
+      animation: mesh-shift 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes mesh-shift {
+      0% {
+        filter: hue-rotate(0deg) saturate(1.05);
+        transform: scale(1) translate(0, 0);
+      }
+      33% {
+        filter: hue-rotate(8deg) saturate(1.15);
+        transform: scale(1.04) translate(-1%, 1%);
+      }
+      66% {
+        filter: hue-rotate(-6deg) saturate(1.1);
+        transform: scale(1.02) translate(1%, -0.5%);
+      }
+      100% {
+        filter: hue-rotate(4deg) saturate(1.08);
+        transform: scale(1.05) translate(0.5%, 1.5%);
+      }
+    }
+
+    .noise-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      opacity: 0.07;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    .wrap {
+      position: relative;
+      z-index: 2;
+      padding-bottom: 5rem;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: clamp(1.5rem, 5vw, 4rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glitch scanline overlay — hero only */
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.13) 2px,
+        rgba(0, 0, 0, 0.13) 4px
+      );
+      animation: scan-drift 8s linear infinite;
+      mix-blend-mode: multiply;
+      opacity: 0.45;
+    }
+
+    @keyframes scan-drift {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(8px); }
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+    }
+
+    .hero-kicker {
+      font-family: var(--font-mono);
+      font-size: clamp(11px, 1.8vw, 13px);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      opacity: 0.95;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(2.8rem, 12vw, 8.5rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: #fff;
+      text-shadow:
+        0 0 40px rgba(139, 47, 255, 0.6),
+        0 4px 0 var(--black);
+    }
+
+    .hero h1 .line2 {
+      display: block;
+      background: linear-gradient(90deg, var(--gold-bright), var(--gold), var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 3.5s ease-in-out infinite;
+      background-size: 200% auto;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+
+    .hero-sub {
+      margin-top: clamp(1.25rem, 3vw, 2rem);
+      font-family: var(--font-mono);
+      font-size: clamp(13px, 2.2vw, 17px);
+      max-width: 42em;
+      margin-left: auto;
+      margin-right: auto;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .hero-sub strong {
+      color: var(--gold-bright);
+      font-weight: 500;
+    }
+
+    .tm {
+      font-size: 0.55em;
+      vertical-align: super;
+      color: var(--violet);
+    }
+
+    .glitch-wrap {
+      display: inline-block;
+      position: relative;
+    }
+
+    .glitch-wrap::before,
+    .glitch-wrap::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .glitch-wrap::before {
+        animation: glitch-1 4s infinite;
+        color: var(--violet);
+        clip-path: inset(40% 0 45% 0);
+      }
+      .glitch-wrap::after {
+        animation: glitch-2 4.2s infinite;
+        color: var(--gold-bright);
+        clip-path: inset(55% 0 30% 0);
+      }
+    }
+
+    @keyframes glitch-1 {
+      0%, 90%, 100% { opacity: 0; transform: translate(0); }
+      91% { opacity: 0.25; transform: translate(-2px, 1px); }
+      93% { opacity: 0.15; transform: translate(3px, -1px); }
+    }
+
+    @keyframes glitch-2 {
+      0%, 88%, 100% { opacity: 0; transform: translate(0); }
+      89% { opacity: 0.2; transform: translate(2px, 2px); }
+      92% { opacity: 0.1; transform: translate(-3px, 0); }
+    }
+
+    /* Sections */
+    section {
+      padding: clamp(3rem, 8vw, 6rem) clamp(1.25rem, 5vw, 4rem);
+      position: relative;
+    }
+
+    .section-label {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 4rem);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.12);
+      margin-bottom: 2rem;
+      line-height: 1;
+    }
+
+    .section-label span {
+      color: var(--violet);
+      text-shadow: 0 0 30px rgba(139, 47, 255, 0.5);
+    }
+
+    .who-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1.5rem, 4vw, 3rem);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      .who-grid { grid-template-columns: 1fr; }
+    }
+
+    .person-card {
+      border: 2px solid var(--gold);
+      background: linear-gradient(145deg, rgba(45, 0, 96, 0.65), rgba(26, 0, 48, 0.9));
+      box-shadow:
+        0 0 0 1px rgba(139, 47, 255, 0.4),
+        0 20px 60px rgba(139, 47, 255, 0.35),
+        0 8px 24px rgba(0, 0, 0, 0.5);
+      padding: clamp(1rem, 3vw, 1.75rem);
+      position: relative;
+    }
+
+    .person-card::before {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      background: linear-gradient(135deg, var(--violet), transparent, var(--gold));
+      z-index: -1;
+      opacity: 0.35;
+      filter: blur(12px);
+    }
+
+    .photo-frame {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      margin-bottom: 1.25rem;
+      border: 3px solid var(--gold-bright);
+      overflow: hidden;
+      background: #000;
+      box-shadow:
+        inset 0 0 40px rgba(139, 47, 255, 0.3),
+        0 0 32px rgba(139, 47, 255, 0.5);
+    }
+
+    /* [PHOTO_1] / [PHOTO_2]: luxury mag cutout — replace <img> src when real photos are ready */
+    .photo-frame .photo-label {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      letter-spacing: 0.05em;
+      color: var(--gold);
+      text-shadow: 0 0 20px var(--violet);
+      z-index: 2;
+    }
+
+    .profile-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.95;
+    }
+
+    /* Until real assets: hide empty img so [PHOTO_N] labels read as placeholders */
+    .profile-photo:not([src]),
+    .profile-photo[src=""] {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .person-card h3 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .person-card .title-line {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--violet);
+      margin-bottom: 1rem;
+    }
+
+    .person-card p {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
+    /* Skills */
+    .skills-block {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .skill-row {
+      margin-bottom: 1.1rem;
+    }
+
+    .skill-row header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 0.35rem;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      flex-wrap: wrap;
+    }
+
+    .skill-row .name { color: #fff; }
+    .skill-row .blocks {
+      flex: 1 1 100%;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--violet);
+      line-height: 1.2;
+      margin: 0.15rem 0 0.2rem;
+      word-break: break-all;
+      opacity: 0.9;
+    }
+    .skill-row .tier {
+      color: var(--gold-bright);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .bar {
+      height: 10px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(212, 175, 55, 0.5);
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--violet), var(--gold-bright));
+      box-shadow: 0 0 14px rgba(139, 47, 255, 0.8);
+      animation: bar-pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes bar-pulse {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.15); }
+    }
+
+    .bar-fill.w-94 { width: 94%; }
+    .bar-fill.w-96 { width: 96%; }
+    .bar-fill.w-97 { width: 97%; }
+    .bar-fill.w-98 { width: 98%; }
+    .bar-fill.w-99 { width: 99%; }
+    .bar-fill.w-100 { width: 100%; }
+
+    /* Clients */
+    .clients-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(1.5rem, 4vw, 3rem);
+      align-items: center;
+      margin-top: 2rem;
+    }
+
+    .fake-logo {
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.6));
+      animation: client-float 5s ease-in-out infinite;
+    }
+
+    .fake-logo:nth-child(2) { animation-delay: -1s; }
+    .fake-logo:nth-child(3) { animation-delay: -2s; }
+    .fake-logo:nth-child(4) { animation-delay: -3s; }
+    .fake-logo:nth-child(5) { animation-delay: -4s; }
+
+    @keyframes client-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .footer-tag {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.35);
+      padding: 2rem 1rem 6rem;
+    }
+
+    /* Ticker */
+    .ticker-wrap {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: linear-gradient(90deg, var(--black), var(--bg-mid), var(--black));
+      border-top: 2px solid var(--gold);
+      overflow: hidden;
+      padding: 0.65rem 0;
+      box-shadow: 0 -8px 40px rgba(139, 47, 255, 0.25);
+    }
+
+    .ticker {
+      display: inline-flex;
+      white-space: nowrap;
+      animation: ticker-scroll 28s linear infinite;
+      font-family: var(--font-display);
+      font-size: clamp(0.95rem, 2.5vw, 1.35rem);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-bright);
+      text-shadow: 0 0 12px var(--violet);
+    }
+
+    .ticker span { padding: 0 2rem; }
+
+    @keyframes ticker-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .mesh-bg,
+      .hero::after,
+      .hero h1 .line2,
+      .bar-fill,
+      .fake-logo,
+      .ticker { animation: none; }
+      .glitch-wrap::before,
+      .glitch-wrap::after { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="mesh-bg" aria-hidden="true"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <div class="cursor-dot" id="cursor" aria-hidden="true">$</div>
+
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="hero-kicker">Сертифицированы • Невозмутимы • Собираем</p>
+        <h1>
+          <span class="glitch-wrap" data-text="МЫ ПИШЕМ КОД.">МЫ ПИШЕМ КОД.</span>
+          <span class="line2">ДЕНЬГИ ИДУТ ЗА НАМИ.</span>
+        </h1>
+        <p class="hero-sub">
+          <strong>Алексей и Дмитрий</strong> — Сеньорные архитекторы цифрового будущего<span class="tm">™</span><br />
+          Мы не пушим коммиты — мы выкладываем артефакты доминирования.
+        </p>
+      </div>
+    </header>
+
+    <section aria-labelledby="who-heading">
+      <h2 id="who-heading" class="section-label"><span>КТО</span> МЫ ТАКИЕ</h2>
+      <!-- Фото лежат рядом с HTML: aleksey.jpg, dmitriy.jpg -->
+      <div class="who-grid">
+        <article class="person-card">
+          <div class="photo-frame">
+            <img class="profile-photo" src="aleksey.jpg" alt="Алексей" />
+          </div>
+          <h3>Алексей</h3>
+          <p class="title-line">10x • Иммунитет к багам • ₽₽₽</p>
+          <p>
+            Компилятор спрашивает у <em>него</em> разрешения. Шлёт код ещё до того, как «agile» стал словом —
+            это была просто манера войти в переговорку. Клавиатуры его боятся; рекрутеры пишут с одноразовых.
+            Он ни разу не написал баг — иногда реальность ненадолго отстаёт от его замысла.
+          </p>
+        </article>
+        <article class="person-card">
+          <div class="photo-frame">
+            <img class="profile-photo" src="dmitriy.jpg" alt="Дмитрий" />
+          </div>
+          <h3>Дмитрий</h3>
+          <p class="title-line">Энергия staff+ • Касса только в плюс</p>
+          <p>
+            Он не читает доки — доки обновляются сами, когда он наводит курсор на вкладку. Известен тем,
+            что превращает «невозможно» в «выставлен счёт». Stack Overflow гасит треды из уважения, когда он заходит.
+            Если бы у аптайма было лицо, оно просило бы у него совета по уходу.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="skills-heading">
+      <h2 id="skills-heading" class="section-label"><span>НАВЫКИ</span> (ИНВЕНТАРЬ)</h2>
+      <div class="skills-block">
+        <div class="skill-row">
+          <header><span class="name">JavaScript</span><span class="tier">БОЖЕСТВЕННО</span></header>
+          <p class="blocks">████████████</p>
+          <div class="bar"><div class="bar-fill w-100"></div></div>
+        </div>
+        <div class="skill-row">
+          <header><span class="name">TypeScript</span><span class="tier">ВОЗНЕСЛИСЬ</span></header>
+          <p class="blocks">███████████░</p>
+          <div class="bar"><div class="bar-fill w-99"></div></div>
+        </div>
+        <div class="skill-row">
+          <header><span class="name">React / Вайб</span><span class="tier">УГОЛОВЩИНА</span></header>
+          <p class="blocks">██████████░░</p>
+          <div class="bar"><div class="bar-fill w-98"></div></div>
+        </div>
+        <div class="skill-row">
+          <header><span class="name">Node.js</span><span class="tier">ПЕЧАТАЕМ</span></header>
+          <p class="blocks">█████████░░░</p>
+          <div class="bar"><div class="bar-fill w-97"></div></div>
+        </div>
+        <div class="skill-row">
+          <header><span class="name">«Софт скиллы»</span><span class="tier">НЕ НУЖНЫ</span></header>
+          <p class="blocks">████████░░░░</p>
+          <div class="bar"><div class="bar-fill w-96"></div></div>
+        </div>
+        <div class="skill-row">
+          <header><span class="name">Инвойсы</span><span class="tier">МАКС</span></header>
+          <p class="blocks">████████████</p>
+          <div class="bar"><div class="bar-fill w-100"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="clients-heading">
+      <h2 id="clients-heading" class="section-label"><span>КЛИЕНТЫ</span> (ДОВЕРЕННЫЕ)</h2>
+      <p class="hero-sub" style="text-align:center; max-width:36rem; margin:0 auto 0.5rem;">
+        Имена под NDA. Логотипы в духе «примерно как деньги».
+      </p>
+      <div class="clients-row" role="list">
+        <span class="fake-logo" role="listitem" aria-label="Заглушка клиента">💰</span>
+        <span class="fake-logo" role="listitem" aria-label="Заглушка клиента">💰</span>
+        <span class="fake-logo" role="listitem" aria-label="Заглушка клиента">💰</span>
+        <span class="fake-logo" role="listitem" aria-label="Заглушка клиента">💰</span>
+        <span class="fake-logo" role="listitem" aria-label="Заглушка клиента">💰</span>
+      </div>
+    </section>
+
+    <p class="footer-tag">© ∞ Elite Architects — не настоящая компания • Собрано на эго и чистом CSS</p>
+  </div>
+
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker">
+      <span>✦ ЭЛИТНЫЕ РАЗРАБОТЧИКИ ✦ ШЛЁМ КОД ✦ ЛОВИМ ОПЛАТУ ✦</span>
+      <span>✦ ЭЛИТНЫЕ РАЗРАБОТЧИКИ ✦ ШЛЁМ КОД ✦ ЛОВИМ ОПЛАТУ ✦</span>
+      <span>✦ ЭЛИТНЫЕ РАЗРАБОТЧИКИ ✦ ШЛЁМ КОД ✦ ЛОВИМ ОПЛАТУ ✦</span>
+      <span>✦ ЭЛИТНЫЕ РАЗРАБОТЧИКИ ✦ ШЛЁМ КОД ✦ ЛОВИМ ОПЛАТУ ✦</span>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var c = document.getElementById("cursor");
+      if (!c || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      document.addEventListener("mousemove", function (e) {
+        c.style.left = e.clientX + "px";
+        c.style.top = e.clientY + "px";
+      });
+    })();
+  </script>
+</body>
+</html>
